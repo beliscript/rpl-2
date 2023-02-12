@@ -19,30 +19,6 @@ class Register extends Controller{
 		$this->view('templates/footer_auth');
 	}
 
-    public function kirimEmail($email) {
-        $mail = new PHPMailer(true);
-        try {
-           $mail->SMTPDebug = 0;									
-           $mail->isSMTP();											
-           $mail->Host	 = 'mail.warungtehusi.com';					
-           $mail->SMTPAuth = true;							
-           $mail->Username = 'noreply@warungtehusi.com';				
-           $mail->Password = 'eAGTGqQzpXrM';						
-           $mail->SMTPSecure = 'tsl';							
-           $mail->Port	 = 25;
-  
-           $mail->setFrom('noreply@warungtehusi.com', 'DosaKu');
-           $mail->addAddress($email);
-           
-           $mail->isHTML(true);								
-           $mail->Subject = 'Berhasil Mendaftar';
-           $mail->Body = 'Selamat, Kamu telah berhasil mendaftar di DosaKu.';
-           $mail->send();
-           return true;
-        } catch (Exception $e) {
-           return false;
-        }
-    }
 
     public function simpan(){
         $user = $this->model('User_model');
@@ -83,7 +59,6 @@ class Register extends Controller{
             $user->setPassword(password_hash($_POST['password'], PASSWORD_DEFAULT));
             $user->setLimitPengeluaran(1000000);
             if($user->register() > 0){
-                $this->kirimEmail($user->getEmail());
                 echo json_encode(array('status' => 'success', 'message' => 'Hore, Kamu telah menjadi bagian <b>Dosa KU</b>.'));
             }else{
                echo  json_encode(array('status' => 'failed', 'message' => '<ul><li>Gagal menambahkan user</li</ul>'));

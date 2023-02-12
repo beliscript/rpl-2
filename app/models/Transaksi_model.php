@@ -45,36 +45,6 @@ class Transaksi_model{
         $this->tanggal = $tanggal;
     }
 
-    public function getIdTransaksi()
-    {
-        // return change to int
-        return (int) $this->idTransaksi;
-    }
-
-    public function getJudulTransaksi()
-    {
-        return $this->judulTransaksi;
-    }
-
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    public function getIdKategori()
-    {
-        return $this->idKategori;
-    }
-
-    public function getJumlah()
-    {
-        return $this->jumlah;
-    }
-
-    public function getTanggal()
-    {
-        return $this->tanggal;
-    }
 
     public function tampilSemuaTransaksi($data)
     {
@@ -188,8 +158,6 @@ class Transaksi_model{
     }
 
 
-
-    // tambah data
     public function tambahTransaksi()
     {
         $query = "INSERT INTO " . $this->table . " VALUES ('', :email, :idKategori, :judulTransaksi, :jumlah, :tanggal)";
@@ -203,7 +171,6 @@ class Transaksi_model{
         return $this->db->rowCount();
     }
 
-    // ubah data
     public function ubahTransaksi()
     {
         $query = "UPDATE " . $this->table . " SET judulTransaksi=:judulTransaksi , jumlah=:jumlah, tanggal=:tanggal WHERE idTransaksi=:idTransaksi AND email=:email";

@@ -17,10 +17,7 @@ class Kategori_model{
 		$this->idKategori = $idKategori;
 	}
 
-	public function getIdKategori()
-	{
-		return $this->idKategori;
-	}
+
 
 
     // tampilsemua

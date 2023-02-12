@@ -39,10 +39,4 @@ class Login extends Controller{
             echo json_encode(array('status' => 'failed', 'message' => $pesan));
         }
     }
-
-    public function logout(){
-        session_destroy();
-        header('location: '. BASEURL . '/login');
-        exit;
-    }
 }

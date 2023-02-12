@@ -38,32 +38,6 @@ class User_model{
 	{
 		$this->lastNotif = $lastNotif;
 	}
-	
-
-	public function getEmail()
-	{
-		return $this->email;
-	}
-
-	public function getNama()
-	{
-		return $this->nama;
-	}
-
-	public function getPassword()
-	{
-		return $this->password;
-	}
-
-	public function getLimitPengeluaran()
-	{
-		return $this->limitPengeluaran;
-	}
-
-	public function getLastNotif()
-	{
-		return $this->lastNotif;
-	}
 
 	public function register()
 	{
@@ -107,22 +81,13 @@ class User_model{
 		return $this->db->rowCount();
 	}
 
-	public function tampilUserLimit()
-	{
-	
-		$query = "SELECT user.email, user.limitPengeluaran, (SELECT SUM(transaksi.jumlah) FROM transaksi INNER JOIN kategori ON transaksi.idKategori=kategori.idKategori WHERE transaksi.email=" . $this->table . ".email AND kategori.tipe='pengeluaran' AND transaksi.tanggal LIKE :tanggal) as total_pengeluaran FROM " . $this->table . " where limitPengeluaran < (SELECT SUM(transaksi.jumlah) FROM transaksi INNER JOIN kategori ON transaksi.idKategori=kategori.idKategori WHERE transaksi.email=" . $this->table . ".email AND kategori.tipe='pengeluaran' AND transaksi.tanggal LIKE :tanggal) AND (lastNotif <:tanggal OR lastNotif IS NULL)";
-		$this->db->query($query);
-		$this->db->bind('tanggal', date('Y-m-d').'%');
-		$this->db->execute();
-		return $this->db->resultSet();
-	}
 
 	public function tampilUser()
 	{
-		$query = "SELECT * FROM ".$this->table." WHERE email=:email";
+		$query = "SELECT user.*, SUM(transaksi.jumlah) as total_pengeluaran FROM transaksi INNER JOIN kategori ON transaksi.idKategori=kategori.idKategori INNER JOIN user ON transaksi.email=user.email WHERE transaksi.email=:email AND kategori.tipe='pengeluaran' AND transaksi.tanggal LIKE :tanggal";
 		$this->db->query($query);
 		$this->db->bind('email', $this->email);
-		$this->db->execute();
+		$this->db->bind('tanggal', date('Y-m-d').'%');
 		return $this->db->single() ? $this->db->single() : false;
 	}
 
@@ -131,7 +96,6 @@ class User_model{
 		$query = "SELECT * FROM ".$this->table." WHERE email=:email";
 		$this->db->query($query);
 		$this->db->bind('email', $this->email);
-		$this->db->execute();
 		$user = $this->db->single();
 		if($user){
 			if(password_verify($this->password, $user['password'])){
